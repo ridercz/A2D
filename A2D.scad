@@ -7,7 +7,7 @@
 
 // Constants
 a2d_version = [1, 0, 0];    // Version of a2d library [major, minor, revision]
-pi = 3.14159;               // Pi value
+pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
 /** POINT GENERATORS **/
