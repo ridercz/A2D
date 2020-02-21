@@ -1,12 +1,12 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.0.0 (2020-02-20) *
+ * Altair's 2D Objects for OpenSCAD              version 1.1.0 (2020-02-21) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 0, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 1, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -191,7 +191,35 @@ function vector_point(alpha, delta) = [sin(alpha) * delta, cos(alpha) * delta];
 // Will offset a list of points by given offset each
 function translate_points(points, offset) = [for(p = points) p + offset];
 
-// Private helper functions
+/** TEXT **/
+
+// Will display text on a circle curve of given radius and from-to angles a1-a2
+module circle_text(radius, text, font, a1 = 0, a2 = 180, size = 10, valign = "baseline", language = "en", script = "latin", direction = "out") {
+    char_count = len(text);
+    angle_step = (a2 - a1) / (char_count - 1);
+
+    for(i = [0:char_count - 1]) {
+        r1a = direction == "out" ? a2 - angle_step * i : a1 + angle_step * i;
+        r2a = direction == "out" ? -90 : +90;
+        rotate(r1a)  translate([radius, 0]) rotate(r2a) text(text[i], size = size, font = font, halign = "center", valign = valign, language = language, script = script);
+    }
+}
+
+// Will display multiline text with given line height 
+module multiline_text(text, font, line_height = 1.2, size = 10, halign = "left", valign = "baseline", language = "en", script = "latin") {
+    assert(is_list(text));
+
+    line_count = len(text);
+    line_spacing = size * line_height;
+    total_height = (line_count - 1) * line_spacing + size;
+    yo = valign == "top" ? - total_height
+       : valign == "center" ? - total_height / 2
+       : 0;
+
+    for(i = [0 : line_count]) translate([0, i * line_spacing + yo]) text(text[line_count - 1 - i], size = size, font = font, halign = halign, valign = "baseline", language = language, script = script);
+}
+
+/** PRIVATE HELPER FUNCTIONS **/
 
 function a2d_outer(d, thickness, factor = 2) = 
     assert(thickness != 0) 
