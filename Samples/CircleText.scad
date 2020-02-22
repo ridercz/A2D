@@ -1,3 +1,12 @@
+/****************************************************************************
+ * Circle Text Sample - sample for A2D OpenSCAD Library                     *
+ * Copyright (c) Michal A. Valasek, 2020                                    *
+ * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
+ * ------------------------------------------------------------------------ *
+ * This sample is intended to showcase how the options of circle_text       *
+ * module are supposed to work.                                             *
+ ****************************************************************************/
+
 include <../A2D.scad>;
 
 text_angle = 30;

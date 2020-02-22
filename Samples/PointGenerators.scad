@@ -1,4 +1,11 @@
-// Simple lid with a corner holes
+/****************************************************************************
+ * Point Generator Sample - sample for A2D OpenSCAD Library                 *
+ * Copyright (c) Michal A. Valasek, 2020                                    *
+ * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
+ * ------------------------------------------------------------------------ *
+ * This sample is intended to showcase how the point generators can be used *
+ * to specify corner holes placement.                                       *
+ ****************************************************************************/
 
 include <../A2D.scad>
 
