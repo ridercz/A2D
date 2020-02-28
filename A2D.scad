@@ -1,12 +1,12 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.1.0 (2020-02-21) *
+ * Altair's 2D Objects for OpenSCAD              version 1.2.0 (2020-02-28) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 1, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 2, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -171,6 +171,17 @@ module rh_square(size, radius, thickness, center = false) {
         }
 }
 
+/** SHAPES - other **/
+
+module knurled_circle(d, knurl_count, knurl_size = .6) {
+    knurl_diameter = PI * d / knurl_count * knurl_size;
+    inner_diameter = d - knurl_diameter;
+
+    circle(d = inner_diameter + knurl_diameter * (1 - knurl_size), $fn = knurl_count);
+    knurl_points = regpoly_points(od = inner_diameter, vertices = knurl_count);
+    for(pos = knurl_points) translate(pos) circle(d = knurl_diameter);
+}
+
 /** FUNCTIONS **/
 
 // Gets ciscumscribed circle diameter from given inscribed circle diameter for a regular polygon
@@ -190,6 +201,12 @@ function vector_point(alpha, delta) = [sin(alpha) * delta, cos(alpha) * delta];
 
 // Will offset a list of points by given offset each
 function translate_points(points, offset) = [for(p = points) p + offset];
+
+// Check if current version is greater or equal to minimal required version
+function a2d_required(minver) = a2d_ver2num(a2d_version) >= a2d_ver2num(minver);
+
+// Converts version vector [x, y, z] to number xyyzz
+function a2d_ver2num(version) = version[0] * 10000 + version[1] * 100 + version[2];
 
 /** TEXT **/
 
