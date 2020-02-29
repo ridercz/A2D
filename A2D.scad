@@ -1,12 +1,12 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.2.0 (2020-02-28) *
+ * Altair's 2D Objects for OpenSCAD              version 1.3.0 (2020-02-29) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 2, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 3, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -48,6 +48,12 @@ module p6star(od) {
 
     rotate(30) circle(d = od, $fn = 3);
     rotate(90) circle(d = od, $fn = 3);
+}
+
+module p8star(od) {
+    assert(od > 0);
+    circle(d = od, $fn = 4);
+    rotate(45) circle(d = od, $fn = 4);
 }
 
 // Creates a regular star of given number of points and outer and inner diameter, centered on origin
