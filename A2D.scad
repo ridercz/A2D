@@ -1,12 +1,12 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.3.0 (2020-02-29) *
+ * Altair's 2D Objects for OpenSCAD              version 1.4.0 (2020-03-07) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 3, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 4, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -16,7 +16,7 @@ phi = (1 + sqrt(5)) / 2;    // Golden ratio
 function regpoly_points(od, vertices) =
     assert(od > 0)
     assert(vertices > 1)
-    [for(a = [0 : 360 / vertices : 359]) vector_point(a+90, od / 2)];
+    [for(a = [0 : 360 / vertices : 359]) vector_point(a + 90, od / 2)];
 
 // Generates points of vertices of a rectangle ("square" in OpenSCAD terminology), given its size in [x, y]
 function square_points(size, center = false) = 
@@ -50,6 +50,7 @@ module p6star(od) {
     rotate(90) circle(d = od, $fn = 3);
 }
 
+// Creates a perfect eight-pointed star of given outer diameter, centered on origin
 module p8star(od) {
     assert(od > 0);
     circle(d = od, $fn = 4);
@@ -179,13 +180,33 @@ module rh_square(size, radius, thickness, center = false) {
 
 /** SHAPES - other **/
 
+// Creates a knurled circle with given number of knurls
 module knurled_circle(d, knurl_count, knurl_size = .6) {
+    assert(d > 0);
+    assert(knurl_count > 4);
+    assert(knurl_size > 0);
+
     knurl_diameter = PI * d / knurl_count * knurl_size;
     inner_diameter = d - knurl_diameter;
 
     circle(d = inner_diameter + knurl_diameter * (1 - knurl_size), $fn = knurl_count);
     knurl_points = regpoly_points(od = inner_diameter, vertices = knurl_count);
     for(pos = knurl_points) translate(pos) circle(d = knurl_diameter);
+}
+
+// Creates a pie slice with given diameter and angles
+module pie(d, a1, a2) {
+    assert(d > 0);
+
+    mask_points = [
+        [0,0],
+        for(i = [0:4]) vector_point(((4 - i) * a1 + i * a2) / 4, d)
+    ];
+
+    intersection() {
+        circle(d = d);
+        polygon(mask_points);
+    }
 }
 
 /** FUNCTIONS **/
@@ -202,8 +223,8 @@ function cir2ins(rc, n) =
     assert(n > 0)
     rc * sin(180 / n) / tan(180 / n);
 
-// Returns point (coordinates) for a given angle (alpha) and distance); follows left hand rule
-function vector_point(alpha, delta) = [sin(alpha) * delta, cos(alpha) * delta];
+// Returns point (coordinates) for a given angle (alpha) and distance); follows right hand rule
+function vector_point(alpha, delta) = [cos(alpha) * delta, sin(alpha) * delta];
 
 // Will offset a list of points by given offset each
 function translate_points(points, offset) = [for(p = points) p + offset];
@@ -224,7 +245,7 @@ module circle_text(radius, text, font, a1 = 0, a2 = 180, size = 10, valign = "ba
     for(i = [0:char_count - 1]) {
         r1a = direction == "out" ? a2 - angle_step * i : a1 + angle_step * i;
         r2a = direction == "out" ? -90 : +90;
-        rotate(r1a)  translate([radius, 0]) rotate(r2a) text(text[i], size = size, font = font, halign = "center", valign = valign, language = language, script = script);
+        rotate(r1a) translate([radius, 0]) rotate(r2a) text(text[i], size = size, font = font, halign = "center", valign = valign, language = language, script = script);
     }
 }
 
