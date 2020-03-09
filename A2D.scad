@@ -1,12 +1,12 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.4.0 (2020-03-07) *
+ * Altair's 2D Objects for OpenSCAD              version 1.5.0 (2020-03-09) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 4, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 5, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -263,6 +263,79 @@ module multiline_text(text, font, line_height = 1.2, size = 10, halign = "left",
     for(i = [0 : line_count]) translate([0, i * line_spacing + yo]) text(text[line_count - 1 - i], size = size, font = font, halign = halign, valign = "baseline", language = language, script = script);
 }
 
+/** GRILLS **/
+
+module grill_mask_square(hsize, spacing, count) {
+    assert(is_num(hsize) || (is_list(hsize) && len(hsize) == 2), "hsize must be number or list with two items");
+    assert(is_num(spacing) || (is_list(spacing) && len(spacing) == 2), "spacing must be number or list with two items");
+    assert(is_num(count) || (is_list(count) && len(count) == 2), "count must be number or list with two items");
+
+    // Expand scalars to lists if necessary
+    rhsize = a2d_num2list(hsize, 2);
+    rspacing = a2d_num2list(spacing, 2);
+    rcount = a2d_num2list(count, 2);
+
+    // Draw squares
+    for(xi = [0:rcount[0] - 1], yi = [0:rcount[1] - 1]) {
+        pos = [xi * (rhsize[0] + rspacing[0]), yi * (rhsize[1] + rspacing[1])];
+        translate(pos) square(rhsize);
+    }
+}
+
+module grill_mask_square_auto(size, hsize, spacing) {
+    assert(is_num(size) || (is_list(size) && len(size) == 2), "size must be number or list with two items");
+    assert(is_num(hsize) || (is_list(hsize) && len(hsize) == 2), "hsize must be number or list with two items");
+    assert(is_num(spacing) || (is_list(spacing) && len(spacing) == 2), "spacing must be number or list with two items");
+
+    // Expand scalars to lists if necessary
+    rsize = a2d_num2list(size, 2);
+    rhsize = a2d_num2list(hsize, 2);
+    rspacing = a2d_num2list(spacing, 2);
+
+    // Compute real square size and count
+    count = [for(i = [0, 1]) floor((rsize[i] + rspacing[i]) / (rhsize[i] + rspacing[i]))];
+    rrhsize = [for(i = [0, 1]) (rsize[i] - rspacing[i] * (count[i] - 1)) / count[i]];
+
+    // Draw mask
+    grill_mask_square(rrhsize, spacing, count);
+}
+
+module grill_mask_circle(diameter, size, spacing, count, spokes = 4, spoke_rotate = 0, spoke_width = 0) {
+    assert(diameter > 0);
+    assert(size > 0);
+    assert(spacing > 0);
+    assert(count > 0);
+    assert(spokes > 2);
+    assert(spoke_width >= 0);
+
+    real_spoke_width = spoke_width == 0 ? spacing : spoke_width;
+
+    difference() {
+        // Circles
+        for(i = [0:count - 1]) h_circle(d = diameter - 2 * i * (size + spacing), thickness = -size);
+
+        // Spokes
+        for(a = [0 : 360 / spokes : 359]) rotate(a + spoke_rotate) translate([-real_spoke_width / 2, 0]) square([real_spoke_width, diameter]);
+    }
+}
+
+module grill_mask_circle_auto(outer_diameter, inner_diameter, size, spacing, spokes = 4, spoke_rotate = 0, spoke_width = 0) {
+    assert(outer_diameter > 0 && outer_diameter > inner_diameter);
+    assert(inner_diameter > 0);
+    assert(size > 0);
+    assert(spacing > 0);
+    assert(spokes > 2);
+    assert(spoke_width >= 0);
+
+    // Compute real ring count size
+    dd = (outer_diameter - inner_diameter + spacing) / 2;
+    ring_count = floor(dd / (size + spacing));
+    real_size = (dd - ring_count * spacing) / ring_count;
+
+    // Draw mask
+    grill_mask_circle(diameter = outer_diameter, size = real_size, spacing = spacing, count = ring_count, spokes = spokes, spoke_rotate = spoke_rotate, spoke_width = spoke_width);
+}
+
 /** PRIVATE HELPER FUNCTIONS **/
 
 function a2d_outer(d, thickness, factor = 2) = 
@@ -278,3 +351,9 @@ function a2d_inner(d, thickness, factor = 2) =
     is_list(d) 
         ? [for(x = d) a2d_inner(x, thickness, factor)] 
         : (thickness > 0 ? d : d + factor * thickness);
+
+function a2d_num2list(num, len) = 
+    assert(len > 0) 
+    is_list(num) 
+        ? num
+        : [for(i = [0 : len - 1]) num];

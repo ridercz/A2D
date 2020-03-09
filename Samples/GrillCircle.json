@@ -1,0 +1,53 @@
+{
+    "parameterSets": {
+        "Default round": {
+            "$fn": "32",
+            "corner_radius": "3",
+            "hole_size": "3",
+            "hole_spacing": "3",
+            "outer_size": "80",
+            "rotation": "0",
+            "screw_diameter": "4",
+            "screw_span": "71.5",
+            "sides": "64",
+            "spokes": "4"
+        },
+        "Round with three spokes": {
+            "$fn": "32",
+            "corner_radius": "3",
+            "hole_size": "3",
+            "hole_spacing": "3",
+            "outer_size": "80",
+            "rotation": "0",
+            "screw_diameter": "4",
+            "screw_span": "71.5",
+            "sides": "64",
+            "spokes": "3"
+        },
+        "Hexagonal": {
+            "$fn": "32",
+            "corner_radius": "3",
+            "hole_size": "3",
+            "hole_spacing": "3",
+            "outer_size": "80",
+            "rotation": "30",
+            "screw_diameter": "4",
+            "screw_span": "71.5",
+            "sides": "6",
+            "spokes": "6"
+        },
+        "Octagonal": {
+            "$fn": "32",
+            "corner_radius": "3",
+            "hole_size": "3",
+            "hole_spacing": "3",
+            "outer_size": "80",
+            "rotation": "45",
+            "screw_diameter": "4",
+            "screw_span": "71.5",
+            "sides": "8",
+            "spokes": "4"
+        }
+    },
+    "fileFormatVersion": "1"
+}
