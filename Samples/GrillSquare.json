@@ -1,0 +1,22 @@
+{
+    "parameterSets": {
+        "Square holes": {
+            "base_size": "[150, 50]",
+            "corner_radius": "3",
+            "padding": "[10, 10]",
+            "screw_diameter": "4",
+            "size": "[5, 5]",
+            "spacing": "[3, 3]"
+        },
+        "Narrow slits": {
+            "base_size": "[150, 50]",
+            "corner_radius": "3",
+            "height": "2",
+            "padding": "[10, 10]",
+            "screw_diameter": "4",
+            "size": "[3, 10]",
+            "spacing": "[3, 3]"
+        }
+    },
+    "fileFormatVersion": "1"
+}
