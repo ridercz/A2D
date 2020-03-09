@@ -1,5 +1,5 @@
 /****************************************************************************
- * Circle Text Sample - sample for A2D OpenSCAD Library                     *
+ * Knurled Knob Sample - sample for A2D OpenSCAD Library                    *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  * ------------------------------------------------------------------------ *
