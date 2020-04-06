@@ -1,5 +1,5 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.5.0 (2020-03-09) *
+ * Altair's 2D Objects for OpenSCAD              version 1.6.0 (2020-04-06) *
  * Copyright (c) Michal A. Valasek, 2020                                    *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
@@ -82,7 +82,7 @@ module r_regpoly(od, vertices, radius) {
     }
 }
 
-// Creates a rectangle with given size and corner radius. Size may be specified:
+// Creates a rectangle with given size and corner radius. Radius may be specified:
 // - as a scalar number, the same for all corners
 // - as a list with two items, for top and bottom radii
 // - as a list with four items, for all corners, starting with left bottom counterclockwise
