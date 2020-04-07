@@ -6,7 +6,7 @@
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 5, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 6, 0];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
@@ -334,6 +334,18 @@ module grill_mask_circle_auto(outer_diameter, inner_diameter, size, spacing, spo
 
     // Draw mask
     grill_mask_circle(diameter = outer_diameter, size = real_size, spacing = spacing, count = ring_count, spokes = spokes, spoke_rotate = spoke_rotate, spoke_width = spoke_width);
+}
+
+/** TRANSFORMATIONS **/
+
+// Will make its children round; ro is outside radius, ri is inner radius
+module make_round(ro = 0, ri = 0) {
+    assert(ro >= 0);
+    assert(ri >= 0);
+
+    offset(r = ro) offset(r = -ro)
+    offset(r = -ri) offset(r = ri)
+    children(0);
 }
 
 /** PRIVATE HELPER FUNCTIONS **/
