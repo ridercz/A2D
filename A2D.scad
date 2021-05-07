@@ -1,6 +1,6 @@
 /****************************************************************************
- * Altair's 2D Objects for OpenSCAD              version 1.6.0 (2020-04-06) *
- * Copyright (c) Michal A. Valasek, 2020                                    *
+ * Altair's 2D Objects for OpenSCAD              version 1.6.1 (2021-05-07) *
+ * Copyright (c) Michal A. Valasek, 2020-2021                               *
  * ------------------------------------------------------------------------ *
  * www.rider.cz * www.altair.blog * github.com/ridercz/A2D                  *
  ****************************************************************************/
@@ -102,16 +102,16 @@ module r_square(size, radius, center = false) {
         translate(center ? [size[0] / -2, size[1] / -2] : [0, 0]) hull() {
             // BL
             if(radius[0] <= 0) square([1, 1]);
-            else translate([radius[0], radius[0]]) circle(r = radius[0]);
+            else translate([radius[0], radius[0]]) pie(d = radius[0] * 2, a1 = 180, a2 = 270);
             // BR
             if(radius[1] <= 0) translate([size[0] - 1, 0]) square([1, 1]);
-            else translate([size[0] - radius[1], radius[1]]) circle(r = radius[1]);
+            else translate([size[0] - radius[1], radius[1]]) pie(d = radius[0] * 2, a1 = 270, a2 = 360);
             // TR
             if(radius[2] <= 0) translate([size[0] - 1, size[1] - 1]) square([1, 1]);
-            else translate([size[0] - radius[2], size[1] - radius[2]]) circle(r = radius[2]);
+            else translate([size[0] - radius[2], size[1] - radius[2]]) pie(d = radius[0] * 2, a1 = 0, a2 = 90);
             // TL
             if(radius[3] <= 0) translate([0, size[1] - 1]) square([1, 1]);
-            else translate([radius[3], size[1] - radius[3]]) circle(r = radius[3]);
+            else translate([radius[3], size[1] - radius[3]]) pie(d = radius[0] * 2, a1 = 90, a2 = 180);
         }
     } else {
         // This code should be unreachable
