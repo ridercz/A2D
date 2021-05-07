@@ -6,7 +6,7 @@
  ****************************************************************************/
 
 // Constants
-a2d_version = [1, 6, 0];    // Version of a2d library [major, minor, revision]
+a2d_version = [1, 6, 2];    // Version of a2d library [major, minor, revision]
 pi = PI;                    // Pi value
 phi = (1 + sqrt(5)) / 2;    // Golden ratio
 
